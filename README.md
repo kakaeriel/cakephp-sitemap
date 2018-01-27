@@ -6,7 +6,7 @@ Sitemap generator plugin for CakePHP 3x apps
 This package is available for easy installation through [Packagist](http://packagist.com)
 
 ```bash
-composer require cwbit/cakephp-sitemap "~1.0"
+composer require kakaeriel/cakephp-sitemap "~1.0"
 ```
 
 Then make sure to load the plugin normally in your app. e.g.
@@ -103,6 +103,17 @@ Here's a sample configuration straight from one of the projects using this plugi
                     'changefreq' => 'always',
                 ],
             ],
+            'Products' => [
+                'cacheKey' => 'sitemap',
+                'finders' => 'all' => [
+                    'conditions' => ['Products.is_active' => 1]
+                ],
+                'xmlTags'=> [
+                    'loc' => ['products', ['field' => 'slug']], // generated => /products/:slug | /products/samsung-galaxy-s8
+                    'priority' => '0.9',
+                    'changefreq' => 'always',
+                ],
+            ],
         ],
     ],
 ```
@@ -188,6 +199,16 @@ which produces the following
     </url>
     <url>
         <loc>http://example.com/product/posh-widgets/foobar</loc>
+        <priority>0.9</priority>
+        <changefreq>always</changefreq>
+    </url>
+    <url>
+        <loc>http://example.com/products/samsung-galaxy-s8</loc>
+        <priority>0.9</priority>
+        <changefreq>always</changefreq>
+    </url>
+    <url>
+        <loc>http://example.com/products/macbook-air</loc>
         <priority>0.9</priority>
         <changefreq>always</changefreq>
     </url>
