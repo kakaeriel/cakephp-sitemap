@@ -9,15 +9,14 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Sitemap\Controller\AppController;
 
-class SitemapsController extends AppController
-{
-    public $_allowedTags = [
-      'loc' => true,
-      'lastmod' => true,
-      'priority' => true,
-      'changefreq' => true,
-    ];
+class SitemapsController extends AppController {
 
+    public $_allowedTags = [
+        'loc' => true,
+        'lastmod' => true,
+        'priority' => true,
+        'changefreq' => true,
+    ];
     public $_defaultConfig = [
         'loc' => 'url',
         'lastmod' => 'updated',
@@ -25,8 +24,7 @@ class SitemapsController extends AppController
         'changefreq' => 'daily',
     ];
 
-    public function initialize()
-    {
+    public function initialize() {
         parent::initialize();
 
         $this->loadComponent('RequestHandler');
@@ -35,15 +33,13 @@ class SitemapsController extends AppController
     /**
      * Allow the display function if the Auth component is loaded
      */
-    public function beforeFilter(Event $event)
-    {
+    public function beforeFilter(Event $event) {
         if (isset($this->Auth)) :
             $this->Auth->allow('display');
         endif;
     }
 
-    public function display()
-    {
+    public function display() {
         $this->viewBuilder()->layout('Sitemap.sitemap');
 
         $config = Configure::read('Sitemap');
@@ -53,7 +49,7 @@ class SitemapsController extends AppController
         # build static page sitemap lines
         foreach ($config['static'] as $static) :
             $page = [];
-            $page['loc'] = Router::url($static + ['plugin'=>false], $fullBase = true);
+            $page['loc'] = Router::url($static + ['plugin' => false], $fullBase = true);
             $page['priority'] = '0.5';
             $page['changefreq'] = 'weekly';
             $pages[] = $page;
@@ -78,8 +74,22 @@ class SitemapsController extends AppController
 
             # loop through the found data and build the sitemap lines
             foreach ($data as $entity) :
-                $url = is_object($entity) ? $entity->get($c['loc']) : $entity[$c['loc']];
-                $url = is_array($url) ? $url + ['plugin'=>false] : $url;
+                if (is_array($c['loc'])) {
+                    $url = '';
+                    foreach ($c['loc'] as $segment) {
+                        if (is_array($segment)) {
+                            $url = '/' . is_object($entity) ? $entity->get($segment['field']) : $entity[$segment['field']];
+                        }
+                        else {
+                            $url .= '/' . $segment;
+                        }
+                    }
+                }
+                else{
+                    $url = is_object($entity) ? $entity->get($c['loc']) : $entity[$c['loc']];
+                    $url = is_array($url) ? $url + ['plugin' => false] : $url;
+                }
+
                 $page = [];
                 $page['loc'] = Router::url($url, $fullBase = true);
                 $page['priority'] = $c['priority'];
@@ -92,4 +102,5 @@ class SitemapsController extends AppController
         $this->set(compact('pages'));
         $this->set('_serialize', false);
     }
+
 }
