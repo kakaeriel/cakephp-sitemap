@@ -214,3 +214,7 @@ which produces the following
     </url>
 </urlset>
 ```
+
+## Credits
+
+This work is based on the [code by CWB IT] (https://github.com/cwbit/cakephp-sitemap).
