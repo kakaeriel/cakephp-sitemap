@@ -1,8 +1,21 @@
 {
-    "name": "cwbit/cakephp-sitemap",
+    "name": "kakaeriel/cakephp-sitemap",
     "description": "Sitemap Generator plugin for CakePHP 3.x apps",
     "type": "cakephp-plugin",
+    "keywords": ["cakephp", "sitemap"],
     "license" : "MIT",
+    "authors": [
+        {
+            "name": "CWB IT",
+            "homepage": "https://github.com/cwbit",
+            "role": "Author"
+        },
+        {
+            "name": "Ibnuh Hairil",
+            "homepage": "https://github.com/kakaeriel",
+            "role": "Author"
+        }
+    ],
     "require": {
         "php": ">=5.4.16",
         "cakephp/cakephp": "~3.0"
