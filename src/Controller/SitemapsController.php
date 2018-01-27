@@ -78,7 +78,7 @@ class SitemapsController extends AppController {
                     $url = '';
                     foreach ($c['loc'] as $segment) {
                         if (is_array($segment)) {
-                            $url .= is_object($entity) ? '/' .$entity->get($segment['field']) : '/' .$entity[$segment['field']];
+                            $url .= is_object($entity) ? is_object($entity->get($segment['field'])) ? '/'. $entity->get($segment['field'])->get($segment['field2']) : '/' .$entity->get($segment['field']) : '/' .$entity[$segment['field']];
                         }
                         else {
                             $url .= '/' . $segment;
